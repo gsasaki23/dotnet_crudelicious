@@ -1,0 +1,50 @@
+@model Dish
+
+@{
+    ViewData["Title"] = "New Dish";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Add a new Dish!</h1>
+    <form asp-action="CreateDish" asp-controller="Home" method="post">
+    <div class="row">
+        <div class="col-sm-4">
+            <div>
+                <span asp-validation-for="Chef" class="error-msg"></span>
+                <label asp-for="Chef"></label>
+                <input asp-for="Chef" placeholder="ex: Meil Nosunic">
+            </div>
+            <div>
+                <span asp-validation-for="Name" class="error-msg"></span>
+                <label asp-for="Name"></label>
+                <input asp-for="Name" placeholder="ex: Fresh Memes">
+            </div>
+            <div>
+                <span asp-validation-for="Calories" class="error-msg"></span>
+                <label asp-for="Calories"></label>
+                <input asp-for="Calories" placeholder="ex: 420">
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <span asp-validation-for="Tastiness" class="error-msg"></span>
+            <label asp-for="Tastiness"></label>
+            <select asp-for="Tastiness">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </div>
+        <div class="col-sm-4">
+            <div>
+                <span asp-validation-for="Description" class="error-msg"></span>
+                <label asp-for="Description"></label>
+                <textarea asp-for="Description"></textarea>
+            </div>
+            <input value="Add Dish" type="submit">  
+        </div>
+    </div>
+    </form>
+
+</div>
