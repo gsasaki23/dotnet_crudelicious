@@ -21,14 +21,11 @@ namespace crudelicious.Controllers
         public IActionResult Index()
         {
             // Get all Dishes
-            List<Dish> AllDishes = db.Dishes.ToList();
-
-            // Get the 5 most recently added Dishes
-            // List<Dish> MostRecent = db.Dishes
-            //     .OrderByDescending(u => u.CreatedAt)
-            //     .Take(5)
-            //     .ToList();
-            return View(AllDishes);
+            List<Dish> NewestFiveDishes = db.Dishes
+                .OrderByDescending(u => u.CreatedAt)
+                .Take(5)
+                .ToList();
+            return View(NewestFiveDishes);
         }
         
         [HttpGet("new")]
@@ -47,19 +44,61 @@ namespace crudelicious.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet("update/{dishId}")]
-        public IActionResult UpdateDish(int dishId)
+
+        [HttpGet("/{dishId}")]
+        public IActionResult Details(int dishId)
         {
+            // Query for matching Dish to show
+            Dish RetrievedDish = db.Dishes.FirstOrDefault(dish => dish.DishId == dishId);
+            
+            // If no match, redirect back to home
+            if (RetrievedDish == null){
+                return RedirectToAction("All");
+            }
+            return View(RetrievedDish);
+        }
+
+
+        [HttpGet("edit/{dishId}")]
+        public IActionResult Edit(int dishId){
+            // Query for matching Dish to edit
+            Dish RetrievedDish = db.Dishes.FirstOrDefault(dish => dish.DishId == dishId);
+            
+            // If no match, redirect back to home
+            if (RetrievedDish == null){
+                return RedirectToAction("All");
+            }
+
+            return View(RetrievedDish);
+        }
+
+        [HttpPost("update/{dishId}")]
+        public IActionResult UpdateDish(Dish editedDish, int dishId)
+        {
+            // Return any validation error messages with what was typed
+            if (ModelState.IsValid == false)
+            {
+                return View("Edit", editedDish);
+            }
+
             // Query for matching Dish to update
             Dish RetrievedDish = db.Dishes.FirstOrDefault(dish => dish.DishId == dishId);
+
             // Then we may modify properties of this tracked model object
-            RetrievedDish.Name = "New name";
+            RetrievedDish.Name = editedDish.Name;
+            RetrievedDish.Chef = editedDish.Chef;
+            RetrievedDish.Calories = editedDish.Calories;
+            RetrievedDish.Tastiness = editedDish.Tastiness;
+            RetrievedDish.Description = editedDish.Description;
             RetrievedDish.UpdatedAt = DateTime.Now;
 
+            db.Dishes.Update(RetrievedDish);
             db.SaveChanges();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", new{dishId = RetrievedDish.DishId});
         }
+
+
 
         [HttpGet("delete/{dishId}")]
         public IActionResult DeleteDish(int dishId)
@@ -74,6 +113,8 @@ namespace crudelicious.Controllers
             
             return RedirectToAction("Index");
         }
+
+
 
         public IActionResult Privacy()
         {

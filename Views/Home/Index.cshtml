@@ -6,13 +6,15 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome to CRUDelicious</h1>
-    <h3>Check out some recent dishes!</h3>
 
+    <h3>Check out some recent dishes!</h3>
     @foreach (Dish dish in Model)
     {
         <p>
-            @dish.Name by @dish.Chef
+            <span><a href="/@dish.DishId">@dish.Name</a></span> by @dish.Chef
         </p>
     }
+    <hr/>
 
+    @* If we wanted to also show a different List<Dish> (i.e. all dishes), we could use ViewModel to send 2 different lists from the controller!  *@
 </div>

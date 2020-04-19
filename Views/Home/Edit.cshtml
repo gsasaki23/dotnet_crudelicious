@@ -1,28 +1,28 @@
 @model Dish
 
 @{
-    ViewData["Title"] = "New Dish";
+    ViewData["Title"] = "Edit Dish";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Add a new Dish!</h1>
-    <form asp-action="CreateDish" asp-controller="Home" method="post">
+    <h1 class="display-4">Edit Dish #@Model.DishId</h1>
+    <form asp-action="UpdateDish" asp-controller="Home" method="post" asp-route-dishId='@Model.DishId'>
     <div class="row">
         <div class="col-sm-4">
             <div>
                 <span asp-validation-for="Chef" class="error-msg"></span>
                 <label asp-for="Chef"></label>
-                <input asp-for="Chef" placeholder="ex: Meil Nosunic">
+                <input asp-for="Chef">
             </div>
             <div>
                 <span asp-validation-for="Name" class="error-msg"></span>
                 <label asp-for="Name"></label>
-                <input asp-for="Name" placeholder="ex: Fresh Memes">
+                <input asp-for="Name">
             </div>
             <div>
                 <span asp-validation-for="Calories" class="error-msg"></span>
                 <label asp-for="Calories"></label>
-                <input asp-for="Calories" placeholder="ex: 420">
+                <input asp-for="Calories">
             </div>
         </div>
         <div class="col-sm-4">
@@ -42,9 +42,9 @@
                 <label asp-for="Description"></label>
                 <textarea asp-for="Description"></textarea>
             </div>
-            <button class="btn btn-success" type="submit">Add Dish</button>
+            <button class="btn btn-success" type="submit">Edit Dish</button>
+            <a href="/@Model.DishId" class="btn btn-warning">Cancel</a>
         </div>
     </div>
     </form>
-
 </div>
